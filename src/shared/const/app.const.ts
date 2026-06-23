@@ -1,4 +1,4 @@
-export const APP_NAME = 'NextJS Starter';
+export const APP_NAME = 'Meal Planner';
 
 export const APP_DESCRIPTION =
-  'A production-ready Next.js starter with auth, database, state management, and tests.';
+  'AI-powered weekly meal planner — personalized 7-day plans with calories, macros, ingredients, and recipes tuned to your body and goal.';

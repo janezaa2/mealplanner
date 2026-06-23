@@ -81,7 +81,7 @@ export const LoginForm = () => {
               type="button"
               variant="outline"
               className="w-full"
-              onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+              onClick={() => signIn('google', { callbackUrl: '/plan' })}
             >
               Continue with Google
             </Button>

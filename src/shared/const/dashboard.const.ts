@@ -7,27 +7,27 @@ export type DashboardMetric = {
 
 export const DASHBOARD_METRICS: DashboardMetric[] = [
   {
-    title: 'Total Users',
+    title: 'Plans Generated',
     value: '1,234',
     description: '+12% from last month',
-    icon: 'users',
-  },
-  {
-    title: 'Active Sessions',
-    value: '56',
-    description: 'Currently active',
     icon: 'activity',
   },
   {
-    title: 'Growth Rate',
-    value: '8.2%',
-    description: 'Month over month',
+    title: 'Active Planners',
+    value: '320',
+    description: 'Users with a live plan',
+    icon: 'users',
+  },
+  {
+    title: 'Meals Suggested',
+    value: '34,552',
+    description: 'Across all plans',
     icon: 'trending-up',
   },
   {
-    title: 'Avg. Session Time',
-    value: '24m',
-    description: 'Per active session',
+    title: 'Avg. Daily Calories',
+    value: '2,180',
+    description: 'Across generated plans',
     icon: 'clock',
   },
 ];

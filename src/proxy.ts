@@ -11,7 +11,7 @@ export function proxy(req: NextRequest) {
 
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
   if (isAuthRoute && sessionToken) {
-    return NextResponse.redirect(new URL('/dashboard', req.url));
+    return NextResponse.redirect(new URL('/plan', req.url));
   }
 
   const isProtected = PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
@@ -25,5 +25,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/sign-in', '/sign-up'],
+  matcher: ['/dashboard/:path*', '/plan/:path*', '/sign-in', '/sign-up'],
 };

@@ -1,9 +1,9 @@
 export type SidebarNavItem = {
   href: string;
   label: string;
-  icon: 'dashboard';
+  icon: 'plan';
 };
 
 export const SIDEBAR_NAV_ITEMS: SidebarNavItem[] = [
-  { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+  { href: '/plan', label: 'My Plan', icon: 'plan' },
 ];

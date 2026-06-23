@@ -1,30 +1,42 @@
-export type FeatureCard = {
-  label: string;
+export type HowItWorksStep = {
+  step: string;
   title: string;
   description: string;
-  index: string;
 };
 
-export const HOME_FEATURES: FeatureCard[] = [
+export type SampleMeal = {
+  type: string;
+  name: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+};
+
+export const HOW_IT_WORKS: HowItWorksStep[] = [
   {
-    label: 'Framework',
-    title: 'Next.js 16',
+    step: '01',
+    title: 'Tell us about you',
     description:
-      'App Router, React Server Components, and streaming built in. Ship fast with the architecture that scales.',
-    index: '01',
+      'Enter your height, weight, age and gender. It takes less than a minute and stays private to your account.',
   },
   {
-    label: 'Auth & Data',
-    title: 'NextAuth + MongoDB',
+    step: '02',
+    title: 'Pick your goal',
     description:
-      'Credentials-based auth with JWT sessions, wired to MongoDB via Mongoose. Secure by default, extensible by design.',
-    index: '02',
+      'Lose weight, gain muscle, maintain, or just eat healthier. Your plan is tuned to the goal you choose.',
   },
   {
-    label: 'State & UI',
-    title: 'Zustand + shadcn/ui',
+    step: '03',
+    title: 'Get your 7-day plan',
     description:
-      'Vanilla Zustand stores via context for predictable state. shadcn/ui components for a polished, accessible interface.',
-    index: '03',
+      'AI builds a full week of meals with calories, macros, ingredients and step-by-step recipes — instantly.',
   },
+];
+
+export const SAMPLE_DAY: SampleMeal[] = [
+  { type: 'Breakfast', name: 'Greek Yogurt Power Bowl', calories: 520, protein: 38, carbs: 54, fat: 14 },
+  { type: 'Lunch', name: 'Grilled Chicken & Quinoa', calories: 680, protein: 52, carbs: 62, fat: 20 },
+  { type: 'Dinner', name: 'Salmon, Sweet Potato & Greens', calories: 720, protein: 46, carbs: 58, fat: 28 },
+  { type: 'Snack', name: 'Almonds & Apple', calories: 280, protein: 8, carbs: 30, fat: 16 },
 ];

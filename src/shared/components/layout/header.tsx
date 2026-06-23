@@ -1,5 +1,5 @@
 'use client';
-import { Triangle } from 'lucide-react';
+import { UtensilsCrossed } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -34,7 +34,7 @@ export const Header = () => {
           aria-hidden="true"
           className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-foreground text-background"
         >
-          <Triangle className="size-3 fill-current" />
+          <UtensilsCrossed className="size-3.5" />
         </span>
         <span className="text-sm font-semibold tracking-tight text-foreground">
           {APP_NAME}
@@ -46,6 +46,9 @@ export const Header = () => {
 
         {sessionUser ? (
           <>
+            <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground hover:bg-accent">
+              <Link href="/plan">My Plan</Link>
+            </Button>
             {sessionUser.role === 'admin' && (
               <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground hover:bg-accent">
                 <Link href="/dashboard">Dashboard</Link>

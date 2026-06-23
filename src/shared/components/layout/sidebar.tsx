@@ -1,5 +1,5 @@
 'use client';
-import { LayoutDashboard, type LucideIcon } from 'lucide-react';
+import { UtensilsCrossed, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -7,7 +7,7 @@ import { SIDEBAR_NAV_ITEMS, type SidebarNavItem } from '@/shared/const/navigatio
 import { cn } from '@/shared/lib/utils';
 
 const SIDEBAR_ICON_MAP: Record<SidebarNavItem['icon'], LucideIcon> = {
-  dashboard: LayoutDashboard,
+  plan: UtensilsCrossed,
 };
 
 export const Sidebar = () => {

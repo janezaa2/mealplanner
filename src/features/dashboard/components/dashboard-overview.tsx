@@ -26,7 +26,7 @@ export const DashboardOverview = ({ userName }: DashboardOverviewProps) => {
       <div>
         <h1 className="text-3xl font-bold">Welcome back, {userName}</h1>
         <p className="mt-1 text-muted-foreground">
-          Here is an overview of your application metrics.
+          Here is an overview of your meal planning metrics.
         </p>
       </div>
 
