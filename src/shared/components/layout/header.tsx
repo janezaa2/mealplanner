@@ -1,5 +1,4 @@
 'use client';
-import { UtensilsCrossed } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -7,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useLogout } from '@/features/auth/hooks/use-logout';
 import { ThemeToggle } from '@/shared/components/layout/theme-toggle';
 import { Button } from '@/shared/components/ui/button';
-import { APP_NAME } from '@/shared/const/app.const';
+import { cn } from '@/shared/lib/utils';
 
 type SessionUser = {
   name?: string | null;
@@ -15,7 +14,9 @@ type SessionUser = {
   role?: 'admin' | 'user';
 };
 
-export const Header = () => {
+type HeaderProps = { glass?: boolean };
+
+export const Header = ({ glass = false }: HeaderProps) => {
   const { data: session } = useSession();
   const { logout } = useLogout();
   const sessionUser = session?.user as SessionUser | undefined;
@@ -28,17 +29,31 @@ export const Header = () => {
     .join('');
 
   return (
-    <header className="flex items-center justify-between px-6 py-5 sm:px-10 border-b border-border">
-      <Link href="/" className="flex items-center gap-2.5">
-        <span
-          aria-hidden="true"
-          className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-foreground text-background"
-        >
-          <UtensilsCrossed className="size-3.5" />
-        </span>
-        <span className="text-sm font-semibold tracking-tight text-foreground">
-          {APP_NAME}
-        </span>
+    <header
+      className={cn(
+        'flex items-center justify-between px-6 py-5 sm:px-10',
+        glass
+          ? 'border-b border-white/10 bg-white/5 backdrop-blur-md'
+          : 'border-b border-border bg-background'
+      )}
+    >
+      <Link
+        href="/"
+        className={cn(
+          'flex items-center rounded-xl transition-opacity hover:opacity-90',
+          glass
+            ? 'bg-white/15 px-3 py-1 backdrop-blur-sm ring-1 ring-white/20'
+            : 'mix-blend-multiply dark:mix-blend-normal'
+        )}
+      >
+        <Image
+          src="/logo.png"
+          alt="Meal Planner"
+          width={140}
+          height={56}
+          className="h-14 w-auto object-contain"
+          priority
+        />
       </Link>
 
       <div className="flex items-center gap-2">
@@ -46,12 +61,22 @@ export const Header = () => {
 
         {sessionUser ? (
           <>
-            <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground hover:bg-accent">
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className={cn(glass ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-muted-foreground hover:text-foreground hover:bg-accent')}
+            >
               <Link href="/plan">My Plan</Link>
             </Button>
             {sessionUser.role === 'admin' && (
-              <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground hover:bg-accent">
-                <Link href="/dashboard">Dashboard</Link>
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                className={cn(glass ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-muted-foreground hover:text-foreground hover:bg-accent')}
+              >
+                <Link href="/admin">Dashboard</Link>
               </Button>
             )}
             <div className="flex items-center gap-3">
@@ -64,27 +89,43 @@ export const Header = () => {
                   className="size-8 rounded-full border border-border object-cover"
                 />
               ) : (
-                <div className="size-8 rounded-full border border-border bg-muted flex items-center justify-center text-xs font-semibold text-foreground">
+                <div className={cn(
+                  'size-8 rounded-full flex items-center justify-center text-xs font-semibold',
+                  glass ? 'border border-white/30 bg-white/10 text-white' : 'border border-border bg-muted text-foreground'
+                )}>
                   {initials || 'U'}
                 </div>
               )}
-              <span className="text-sm text-muted-foreground hidden sm:block">{userName}</span>
+              <span className={cn('text-sm hidden sm:block', glass ? 'text-white/70' : 'text-muted-foreground')}>{userName}</span>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={logout}
-              className="text-muted-foreground hover:text-foreground hover:bg-accent"
+              className={cn(glass ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-muted-foreground hover:text-foreground hover:bg-accent')}
             >
               Sign out
             </Button>
           </>
         ) : (
           <>
-            <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground hover:bg-accent">
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className={cn(glass ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-muted-foreground hover:text-foreground hover:bg-accent')}
+            >
               <Link href="/sign-in">Sign in</Link>
             </Button>
-            <Button size="sm" asChild className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
+            <Button
+              size="sm"
+              asChild
+              className={cn(
+                glass
+                  ? 'bg-white text-black hover:bg-white/90 font-semibold'
+                  : 'bg-primary text-primary-foreground hover:bg-primary/90 font-semibold'
+              )}
+            >
               <Link href="/sign-up">Sign up</Link>
             </Button>
           </>

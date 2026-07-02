@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+import { userRepository } from '@/features/auth/repository/user.repository';
 import { mealPlanRepository } from '@/features/meal-plan/repository/meal-plan.repository';
 import { createDayExtractor } from '@/features/meal-plan/service/day-stream-extractor';
 import {
@@ -12,8 +14,21 @@ import {
   GeneratePlanType,
   WeekPlanSchema,
 } from '@/features/meal-plan/validations/meal-plan.validation';
+import { mailer } from '@/shared/lib/mailer';
 import { getModelChain, openrouter } from '@/shared/lib/openrouter';
+import { pdfGenerator } from '@/shared/lib/pdf';
 import { ServiceResult } from '@/shared/types/common';
+
+async function sendPlanEmailBackground(
+  userId: string,
+  plan: WeekPlan,
+  profile: PlanProfile
+): Promise<void> {
+  const user = await userRepository.findById(userId);
+  if (!user?.email) return;
+  const pdfBuffer = await pdfGenerator.generateMealPlanBuffer(plan, profile);
+  await mailer.sendMealPlanPDF(user.email, pdfBuffer);
+}
 
 const SYSTEM_PROMPT = `You are a professional nutritionist. Generate a personalized weekly meal plan.
 Return ONLY valid JSON (no markdown, no prose) matching exactly this shape:
@@ -98,6 +113,12 @@ export async function generatePlanService(
     });
 
     const plan: WeekPlan = { days: parsed.data.days };
+
+    // Fire-and-forget: send PDF to user's email without blocking the response
+    void sendPlanEmailBackground(userId, plan, profile).catch((err) =>
+      console.error('Failed to send meal plan email:', err)
+    );
+
     return { data: { plan, profile }, status: 201 };
   }
 
@@ -205,6 +226,11 @@ export async function* streamPlanService(
       goal: input.goal,
       days,
     });
+
+    // Fire-and-forget: send PDF to user's email without blocking the stream
+    void sendPlanEmailBackground(userId, { days }, profile).catch((err) =>
+      console.error('Failed to send meal plan email:', err)
+    );
 
     yield { type: 'done', plan: { days }, profile };
     return;

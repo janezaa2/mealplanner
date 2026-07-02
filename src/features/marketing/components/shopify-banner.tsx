@@ -4,15 +4,17 @@ import { ChevronLeft, ChevronRight, ShoppingBag, ShoppingCart } from 'lucide-rea
 import Image from 'next/image';
 import { useRef } from 'react';
 
+import { PublicProduct } from '@/features/admin/types/admin.types';
 import { Button } from '@/shared/components/ui/button';
-import { SHOPIFY_PRODUCTS } from '@/shared/const/shopify-products.const';
 import { cn } from '@/shared/lib/utils';
 
-export const ShopifyBanner = () => {
+type Props = { products: PublicProduct[] };
+
+export const ShopifyBanner = ({ products }: Props) => {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: number) => {
-    scrollerRef.current?.scrollBy({ left: direction * 320, behavior: 'smooth' });
+    scrollerRef.current?.scrollBy({ left: direction * 300, behavior: 'smooth' });
   };
 
   return (
@@ -26,22 +28,10 @@ export const ShopifyBanner = () => {
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={() => scroll(-1)}
-              aria-label="Scroll left"
-            >
+            <Button type="button" variant="outline" size="icon" onClick={() => scroll(-1)} aria-label="Scroll left">
               <ChevronLeft className="size-4" />
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={() => scroll(1)}
-              aria-label="Scroll right"
-            >
+            <Button type="button" variant="outline" size="icon" onClick={() => scroll(1)} aria-label="Scroll right">
               <ChevronRight className="size-4" />
             </Button>
           </div>
@@ -50,53 +40,53 @@ export const ShopifyBanner = () => {
         <div
           ref={scrollerRef}
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2"
+          style={{ scrollbarWidth: 'none' }}
         >
-          {SHOPIFY_PRODUCTS.map((product) => (
-            <a
-              key={product.id}
-              href={product.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                'group flex w-64 shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-border',
-                'bg-background transition-shadow hover:shadow-md'
-              )}
-            >
-              <div className="relative flex h-44 items-center justify-center bg-muted">
-                {product.tag ? (
-                  <span className="absolute left-3 top-3 rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
-                    {product.tag}
-                  </span>
-                ) : null}
-                {product.image ? (
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    fill
-                    sizes="256px"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                ) : (
-                  <span className="text-6xl" aria-hidden="true">
-                    {product.emoji}
-                  </span>
+          {products.map((product) => {
+            const inner = (
+              <div
+                className={cn(
+                  'group flex w-64 shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-border',
+                  'bg-background transition-shadow hover:shadow-md',
+                  product.shopifyUrl && 'cursor-pointer'
                 )}
-              </div>
+              >
+                <div className="relative flex h-44 items-center justify-center bg-muted overflow-hidden">
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="256px"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      unoptimized
+                    />
+                  ) : (
+                    <ShoppingBag className="size-12 text-muted-foreground/40" aria-hidden="true" />
+                  )}
+                </div>
 
-              <div className="flex flex-1 flex-col gap-3 p-4">
-                <h3 className="text-sm font-semibold leading-snug text-foreground">
-                  {product.title}
-                </h3>
-                <div className="mt-auto flex items-center justify-between">
-                  <span className="text-lg font-bold text-foreground">{product.price}</span>
-                  <span className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">
-                    <ShoppingCart className="size-3.5" aria-hidden="true" />
-                    Add
-                  </span>
+                <div className="flex flex-1 flex-col gap-3 p-4">
+                  <h3 className="text-sm font-semibold leading-snug text-foreground">{product.name}</h3>
+                  <div className="mt-auto flex items-center justify-between">
+                    <span className="text-lg font-bold text-foreground">${product.price.toFixed(2)}</span>
+                    <span className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">
+                      <ShoppingCart className="size-3.5" aria-hidden="true" />
+                      Shop
+                    </span>
+                  </div>
                 </div>
               </div>
-            </a>
-          ))}
+            );
+
+            return product.shopifyUrl ? (
+              <a key={product.id} href={product.shopifyUrl} target="_blank" rel="noopener noreferrer">
+                {inner}
+              </a>
+            ) : (
+              <div key={product.id}>{inner}</div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -22,6 +22,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: APP_NAME,
   description: APP_DESCRIPTION,
+  icons: { icon: '/logo.png' },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
